@@ -157,3 +157,21 @@ h1, .list-item a:hover {
     line-height: 20px;
     vertical-align: middle;
 }
+
+#links a, #facts p {
+    flex: 1 1 auto;
+    min-width: 0; /* critical to allow flex item to shrink and wrap */
+}
+
+@media (max-width: 600px) {
+    #links a {
+        white-space: normal; /* allow wrapping on small screens */
+        overflow-wrap: anywhere; /* break long URLs gracefully */
+        word-break: break-word;
+    }
+
+    #facts p {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+}
