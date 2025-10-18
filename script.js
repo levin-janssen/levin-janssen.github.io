@@ -1,21 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const cursorDot = document.querySelector('.custom-cursor-dot');
-    
-    const hoverElements = document.querySelectorAll('a, button');
+    const mediaQuery = window.matchMedia('(pointer: fine)');
 
-    document.addEventListener('mousemove', (e) => {
-        cursorDot.style.left = `${e.clientX}px`;
-        cursorDot.style.top = `${e.clientY}px`;
-    });
+    if (mediaQuery.matches) {
+        const cursorDot = document.querySelector('.custom-cursor-dot');
+        const hoverElements = document.querySelectorAll('a, button');
 
-    hoverElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursorDot.classList.add('grow');
+        document.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = `${e.clientX}px`;
+            cursorDot.style.top = `${e.clientY}px`;
         });
-        el.addEventListener('mouseleave', () => {
-            cursorDot.classList.remove('grow');
+
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorDot.classList.add('grow');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorDot.classList.remove('grow');
+            });
         });
-    });
+    }
 
 });
