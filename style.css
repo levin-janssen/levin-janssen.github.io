@@ -1,0 +1,55 @@
+body {
+    font-family: Inter, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column; /* stack title and links vertically */
+    align-items: center; 
+    justify-content: center;
+}
+h1{
+    font-size: 3rem;
+    color: #000;
+    font-weight: normal;
+    margin: 0;
+}
+#title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+}
+#title img {
+    width: 80px;
+    height: 80px;
+}
+
+#links {
+    margin-top: 0; /* keep spacing handled by gap on body */
+}
+
+#links > div {
+    display: flex; /* icon and text on same row */
+    align-items: center; /* vertically center icon with text */
+    gap: 10px;
+}
+
+#links img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+#links a {
+    color: #000;
+    text-decoration: none;
+    font-size: 1rem;
+}
