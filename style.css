@@ -22,19 +22,21 @@ body, a, button {
         height: 10px;
         background-color: black;
         border-radius: 50%;
-        
         transform: translate(-50%, -50%);
-        
         pointer-events: none;
-        
-        transition: transform 0.2s ease-in-out;
-        
-        z-index: 9999; 
+        transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+        z-index: 9999;
     }
 
     .custom-cursor-dot.grow {
         background-color: rgba(0, 0, 0, 0.5);
         transform: translate(-50%, -50%) scale(2);
+    }
+    .custom-cursor-dot.hidden {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+        visibility: hidden;
+        pointer-events: none;
     }
 }
 
