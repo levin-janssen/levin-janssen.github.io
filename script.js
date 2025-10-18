@@ -1,7 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const mediaQuery = window.matchMedia('(pointer: fine)');
+    
+    // Automatic Age Calculation
+    const birthDate = new Date(2006, 6, 23);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const ageElement = document.getElementById('age-text');
+    ageElement.innerHTML = age + " Jahre";
 
+    // Custom cursor
+    const mediaQuery = window.matchMedia('(pointer: fine)');
     if (mediaQuery.matches) {
         const cursorDot = document.querySelector('.custom-cursor-dot');
         const hoverElements = document.querySelectorAll('a, button');
