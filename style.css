@@ -13,7 +13,6 @@ body, a, button {
     cursor: none;
 }
 
-/* Custom dot cursor */
 @media (pointer: fine) {
     .custom-cursor-dot {
         position: fixed;
@@ -160,13 +159,57 @@ h1, .list-item a:hover {
 
 #links a, #facts p {
     flex: 1 1 auto;
-    min-width: 0; /* critical to allow flex item to shrink and wrap */
+    min-width: 0;
+}
+
+#links .list-item {
+    position: relative;
+}
+#links .list-item:has(a:hover) img {
+    visibility: hidden;
+}
+
+#links .list-item:has(a:hover)::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle farthest-corner at top left, #FF0000 0%, #FF8400 50%, #FFF200 100%);
+    pointer-events: none;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+}
+#links #mail:has(a:hover)::before {
+    -webkit-mask-image: url('img/mail.svg');
+    mask-image: url('img/mail.svg');
+}
+
+#links #linkedin:has(a:hover)::before {
+    -webkit-mask-image: url('img/linkedin.svg');
+    mask-image: url('img/linkedin.svg');
+}
+
+#links #github:has(a:hover)::before {
+    -webkit-mask-image: url('img/github.svg');
+    mask-image: url('img/github.svg');
+}
+
+#links #instagram:has(a:hover)::before {
+    -webkit-mask-image: url('img/instagram.svg');
+    mask-image: url('img/instagram.svg');
 }
 
 @media (max-width: 600px) {
     #links a {
-        white-space: normal; /* allow wrapping on small screens */
-        overflow-wrap: anywhere; /* break long URLs gracefully */
+        white-space: normal;
+        overflow-wrap: anywhere;
         word-break: break-word;
     }
 
