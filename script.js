@@ -47,4 +47,54 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Carousel logic
+    const track = document.querySelector('.carousel-track');
+    const slides = Array.from(track ? track.children : []);
+    const prevBtn = document.querySelector('.carousel-button.prev');
+    const nextBtn = document.querySelector('.carousel-button.next');
+
+    if (track && slides.length) {
+        let currentIndex = 0;
+
+        const update = () => {
+            const carouselEl = track.parentElement; // .carousel
+            const slideWidth = (carouselEl && carouselEl.clientWidth) || (slides[0] && slides[0].clientWidth) || 0; // each slide is 100% of carousel width
+            track.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+            // disable buttons at ends
+            if (prevBtn) prevBtn.disabled = currentIndex === 0;
+            if (nextBtn) nextBtn.disabled = currentIndex === slides.length - 1;
+        };
+
+        // Handle resize to keep slide aligned
+        window.addEventListener('resize', update);
+
+        if (prevBtn) prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex -= 1;
+                update();
+            }
+        });
+        if (nextBtn) nextBtn.addEventListener('click', () => {
+            if (currentIndex < slides.length - 1) {
+                currentIndex += 1;
+                update();
+            }
+        });
+
+        // Keyboard support when carousel focused
+        const carousel = document.querySelector('.carousel');
+        if (carousel) {
+            carousel.setAttribute('tabindex', '0');
+            carousel.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    prevBtn?.click();
+                } else if (e.key === 'ArrowRight') {
+                    nextBtn?.click();
+                }
+            });
+        }
+
+        // Initial alignment
+        update();
+    }
 });

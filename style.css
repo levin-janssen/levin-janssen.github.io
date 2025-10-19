@@ -48,7 +48,6 @@ body {
 }
 
 #content {
-    transform: translateY(-10vh); 
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -164,14 +163,14 @@ h1, .list-item a:hover {
     min-width: 0;
 }
 
-#links .list-item {
+.list-item {
     position: relative;
 }
-#links .list-item:has(a:hover) img {
+.list-item:has(a:hover) img {
     visibility: hidden;
 }
 
-#links .list-item:has(a:hover)::before {
+.list-item:has(a:hover)::before {
     content: "";
     position: absolute;
     left: 0;
@@ -220,3 +219,70 @@ h1, .list-item a:hover {
         word-break: break-word;
     }
 }
+
+
+button:hover {
+    cursor: none;
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+/* Carousel layout */
+.carousel {
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden; /* hide non-active slides */
+    transform: translateY(-10vh);
+}
+
+.carousel-track {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    gap: 0; /* no gap so each slide is contiguous */
+    transition: transform 350ms ease;
+    will-change: transform;
+    position: relative;
+    z-index: 0; /* keep below nav buttons */
+}
+
+.carousel-track > li {
+    flex: 0 0 100%; /* one slide per view */
+    min-width: 100%;
+    padding: 20px; /* internal slide padding */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* center slide content */
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: rgba(255,255,255,0.6);
+    color: #000;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    line-height: 1;
+    backdrop-filter: blur(4px);
+    z-index: 10; /* keep above slide content */
+}
+.carousel-button:hover { background: rgba(255,255,255,0.85); }
+.carousel-button:disabled { opacity: 0.4; cursor: default; }
+.carousel-button.prev { left: 10px; }
+.carousel-button.next { right: 10px; }
+
+/* remove default horizontal scrollbar visibility on some browsers */
+.carousel::-webkit-scrollbar { display: none; }
+
