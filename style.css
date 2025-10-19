@@ -7,6 +7,9 @@ body {
 
 html, body {
     height: 100%;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden; /* guard against horizontal overflow */
 }
 
 body, a, button {
@@ -208,6 +211,16 @@ h1, .list-item a:hover {
 }
 
 @media (max-width: 600px) {
+    h1 {
+        font-size: clamp(1.8rem, 9vw, 3rem);
+    }
+    #title img {
+        width: 64px;
+        height: 64px;
+    }
+    #details {
+        margin-left: 0;
+    }
     #links a {
         white-space: normal;
         overflow-wrap: anywhere;
@@ -230,6 +243,12 @@ button:hover {
   box-sizing: border-box;
 }
 
+/* Responsive media */
+img, svg, video {
+    max-width: 100%;
+    height: auto;
+}
+
 /* Carousel layout */
 .carousel {
     position: relative;
@@ -240,6 +259,7 @@ button:hover {
     touch-action: pan-y;
     -ms-touch-action: pan-y; /* IE/old Edge fallback */
     overscroll-behavior: contain;
+    max-width: 100vw; /* never exceed viewport width */
 }
 
 .carousel-track {
@@ -302,6 +322,7 @@ button:hover {
     .carousel {
         transform: none; /* don't offset on small screens */
         padding-inline: 6px;
+        max-width: 100vw;
     }
 
     .carousel-track > li {
