@@ -236,6 +236,10 @@ button:hover {
     margin: 0 auto;
     overflow: hidden; /* hide non-active slides */
     transform: translateY(-10vh);
+    /* Allow vertical page scroll while enabling horizontal swipe gestures */
+    touch-action: pan-y;
+    -ms-touch-action: pan-y; /* IE/old Edge fallback */
+    overscroll-behavior: contain;
 }
 
 .carousel-track {
@@ -285,4 +289,32 @@ button:hover {
 
 /* remove default horizontal scrollbar visibility on some browsers */
 .carousel::-webkit-scrollbar { display: none; }
+
+/* Prefer reduced motion: limit sliding animation duration */
+@media (prefers-reduced-motion: reduce) {
+    .carousel-track {
+        transition-duration: 0ms;
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+    .carousel {
+        transform: none; /* don't offset on small screens */
+        padding-inline: 6px;
+    }
+
+    .carousel-track > li {
+        padding: 12px; /* tighter padding on mobile */
+    }
+
+    .carousel-button {
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        font-size: 20px;
+    }
+    .carousel-button.prev { left: 6px; }
+    .carousel-button.next { right: 6px; }
+}
 

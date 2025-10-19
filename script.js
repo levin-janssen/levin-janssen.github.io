@@ -56,13 +56,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (track && slides.length) {
         let currentIndex = 0;
 
-        const update = () => {
+        let slideWidth = 0;
+        const computeSlideWidth = () => {
             const carouselEl = track.parentElement; // .carousel
-            const slideWidth = (carouselEl && carouselEl.clientWidth) || (slides[0] && slides[0].clientWidth) || 0; // each slide is 100% of carousel width
-            track.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
-            // disable buttons at ends
+            slideWidth = (carouselEl && carouselEl.clientWidth) || (slides[0] && slides[0].clientWidth) || 0;
+        };
+        const applyTransform = (offset = 0) => {
+            track.style.transform = `translateX(${-(currentIndex * slideWidth) + offset}px)`;
+        };
+        const updateButtons = () => {
             if (prevBtn) prevBtn.disabled = currentIndex === 0;
             if (nextBtn) nextBtn.disabled = currentIndex === slides.length - 1;
+        };
+        const update = () => {
+            computeSlideWidth();
+            applyTransform(0);
+            updateButtons();
         };
 
         // Handle resize to keep slide aligned
@@ -92,6 +101,62 @@ document.addEventListener('DOMContentLoaded', () => {
                     nextBtn?.click();
                 }
             });
+        }
+
+        // Swipe/drag support (pointer events)
+        let isPointerDown = false;
+        let startX = 0;
+        let lastDeltaX = 0;
+        const threshold = 0.2; // fraction of slide width to trigger navigation
+        const maxRubber = 60; // px of edge rubber banding
+
+        const onPointerDown = (e) => {
+            if (!e.isPrimary) return;
+            isPointerDown = true;
+            startX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
+            lastDeltaX = 0;
+            track.style.transition = 'none';
+        };
+        const onPointerMove = (e) => {
+            if (!isPointerDown) return;
+            const currentX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
+            let deltaX = currentX - startX;
+            lastDeltaX = deltaX;
+            // rubber band at edges
+            const atStart = currentIndex === 0 && deltaX > 0;
+            const atEnd = currentIndex === slides.length - 1 && deltaX < 0;
+            if (atStart || atEnd) {
+                const dir = deltaX < 0 ? -1 : 1;
+                deltaX = dir * Math.min(Math.abs(deltaX) ** 0.85, maxRubber);
+            }
+            applyTransform(deltaX);
+        };
+        const onPointerUp = () => {
+            if (!isPointerDown) return;
+            isPointerDown = false;
+            track.style.transition = '';
+            const movedEnough = Math.abs(lastDeltaX) > slideWidth * threshold;
+            if (movedEnough) {
+                if (lastDeltaX < 0 && currentIndex < slides.length - 1) currentIndex += 1;
+                if (lastDeltaX > 0 && currentIndex > 0) currentIndex -= 1;
+            }
+            applyTransform(0);
+            updateButtons();
+        };
+
+        // Pointer events (covers mouse, touch, pen)
+        const carouselEl = track.parentElement;
+        if (window.PointerEvent) {
+            carouselEl.addEventListener('pointerdown', onPointerDown, { passive: true });
+            window.addEventListener('pointermove', onPointerMove, { passive: true });
+            window.addEventListener('pointerup', onPointerUp, { passive: true });
+            window.addEventListener('pointercancel', onPointerUp, { passive: true });
+        } else {
+            // Fallback to touch events
+            carouselEl.addEventListener('touchstart', onPointerDown, { passive: true });
+            window.addEventListener('touchmove', onPointerMove, { passive: true });
+            window.addEventListener('touchend', onPointerUp, { passive: true });
+            window.addEventListener('touchcancel', onPointerUp, { passive: true });
         }
 
         // Initial alignment
